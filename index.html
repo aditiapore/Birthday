@@ -6,14 +6,23 @@
   <title>Once upon a Birthday — Sajal ❤️</title>
   <!-- SEO & Premium Fonts/Icons -->
   <meta name="description" content="A premium, elegant starlight birthday surprise for Sajal Patil from Aditi Pore.">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Premium Google Fonts Import -->
+  <!-- DNS Prefetch & Preconnect for faster external resource loading -->
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
   
+  <!-- Critical CSS first -->
   <link rel="stylesheet" href="styles.css">
+  
+  <!-- Non-critical external resources loaded with lower priority -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+  
+  <!-- Google Fonts - loaded async to not block rendering -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&family=Caveat:wght@400;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&family=Caveat:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&family=Caveat:wght@400;700&display=swap" rel="stylesheet"></noscript>
 </head>
 <body>
 
@@ -148,7 +157,7 @@
         <div class="love-letter-display" id="love-letter-display">
           <!-- Poster-style Static Header -->
           <div class="poster-header">
-            <img src="cute_cats.png" alt="Cute Cats" class="poster-cats-img">
+            <img src="cute_cats.png" alt="Cute Cats" class="poster-cats-img" loading="lazy">
             <div class="poster-title-row">
               <div class="poster-lollipop left-lollipop">
                 <svg viewBox="0 0 60 120" class="poster-lollipop-svg" width="45" height="90" xmlns="http://www.w3.org/2000/svg">
@@ -321,7 +330,7 @@
             <!-- Cream tape -->
             <div class="tape-cream"></div>
             <div class="polaroid-inner">
-              <img src="photo8.jpeg" alt="Sajal Now" class="polaroid-photo">
+              <img src="photo8.jpeg" alt="Sajal Now" class="polaroid-photo" loading="lazy">
             </div>
           </div>
 
@@ -335,7 +344,7 @@
               <span class="typewriter-block">E</span>
             </div>
             <div class="polaroid-inner">
-              <img src="photo10.jpg" alt="Sajal Later" class="polaroid-photo">
+              <img src="photo10.jpg" alt="Sajal Later" class="polaroid-photo" loading="lazy">
             </div>
             <div class="polaroid-caption">I would love you even when you'll look like this ❤️</div>
           </div>
@@ -345,7 +354,7 @@
             <!-- Bobby Pin overlay -->
             <div class="bobby-pin"></div>
             <div class="polaroid-inner">
-              <img src="photo9.jpeg" alt="Aditi Now" class="polaroid-photo">
+              <img src="photo9.jpeg" alt="Aditi Now" class="polaroid-photo" loading="lazy">
             </div>
           </div>
 
@@ -354,7 +363,7 @@
             <!-- Charcoal Tape -->
             <div class="tape-charcoal"></div>
             <div class="polaroid-inner">
-              <img src="photo11.jpg" alt="Aditi Later" class="polaroid-photo">
+              <img src="photo11.jpg" alt="Aditi Later" class="polaroid-photo" loading="lazy">
             </div>
             <div class="polaroid-caption">Will you love me when I will look like this? 💖</div>
           </div>
@@ -417,7 +426,8 @@
   </div>
 
   <!-- Audio Player (Hidden, supports MP3) -->
-  <audio id="bg-audio" loop preload="auto">
+  <!-- preload="none" prevents the 12MB MP3 from blocking page load -->
+  <audio id="bg-audio" loop preload="none">
     <!-- Music source injected by config -->
   </audio>
 
@@ -430,9 +440,9 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+  <!-- Scripts - defer to not block HTML parsing -->
+  <script src="config.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
 
