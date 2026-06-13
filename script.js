@@ -29,23 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 2. Background Image Fallback (photo7.jpeg)
-  function initBackgroundFallback() {
-    const bgImg = new Image();
-    bgImg.onload = () => {
-      // Background loaded from root successfully, nothing to do
-    };
-    bgImg.onerror = () => {
-      console.log("Background image photo7.jpeg failed to load from root. Retrying from assets/...");
-      document.body.style.background = "linear-gradient(rgba(6, 11, 8, 0.9), rgba(3, 5, 7, 0.97)), url('assets/photo7.jpeg') no-repeat center center fixed";
-      document.body.style.backgroundSize = "cover";
-    };
-    bgImg.src = "photo7.jpeg";
-  }
-
-  // Initialize these immediately on script run
+  // Initialize image fallbacks immediately on script run
   initStaticImageFallbacks();
-  initBackgroundFallback();
 
   // --- 1. CONFIGURATION & STATE ---
   let appState = {
@@ -110,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       heart.remove();
     }, duration * 1000);
   }
-  setInterval(spawnFloatingHeart, 600);
+  setInterval(spawnFloatingHeart, 1200); // Reduced from 600ms to minimize DOM churn on slower devices
 
   // --- 3. BACKGROUND MUSIC LOGIC ---
   const bgAudio = document.getElementById("bg-audio");
@@ -127,9 +112,19 @@ document.addEventListener("DOMContentLoaded", () => {
   let audioReady = false;       // True once the audio is buffered enough to play
   let playPending = false;      // True if user clicked play before audio was ready
 
+  let audioLoadStarted = false;
+
   function setupAudio() {
-    // Set the first source directly on the real audio element
-    bgAudio.preload = "auto";
+    // DON'T load audio on page load — wait for user interaction
+    // This prevents the 12MB MP3 from blocking initial page render
+    console.log("Audio setup deferred — will load on first user interaction");
+  }
+
+  function startAudioLoading() {
+    if (audioLoadStarted) return;
+    audioLoadStarted = true;
+    
+    // Now set the source and begin loading
     bgAudio.src = audioSources[0];
     bgAudio.load();
 
@@ -186,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function toggleMusic() {
     appState.audioInitialized = true;
+    startAudioLoading(); // Ensure audio is loading
 
     if (appState.audioPlaying) {
       bgAudio.pause();
@@ -266,6 +262,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Welcome Screen Button Event
   document.getElementById("btn-start").addEventListener("click", () => {
+    // Start loading audio NOW (deferred from page load to save bandwidth)
+    startAudioLoading();
+    
     // Start background music only when "Enter the Dream" is clicked
     // This click event is a trusted user gesture — browsers always allow play() here
     if (!appState.audioPlaying) {
@@ -468,6 +467,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const img = document.createElement("img");
       img.className = "polaroid-img";
       img.alt = mem.caption;
+      img.loading = "lazy";
+      img.decoding = "async";
       img.style.opacity = "0"; // Hide until loaded successfully
       img.style.transition = "opacity 0.4s ease";
       
