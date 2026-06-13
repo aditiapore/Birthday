@@ -39,8 +39,8 @@
 
 body {
   font-family: var(--font-body);
-  /* The starlight background overlaying your custom photo7.jpeg beautifully */
-  background: linear-gradient(rgba(6, 11, 8, 0.9), rgba(3, 5, 7, 0.97)), url('photo7.jpeg') no-repeat center center fixed;
+  /* Pure dark gradient — the photo was invisible behind 90-97% opacity overlay anyway */
+  background: linear-gradient(135deg, rgba(6, 11, 8, 1) 0%, rgba(3, 5, 7, 1) 50%, rgba(8, 14, 10, 1) 100%);
   background-size: cover;
   color: var(--text-primary);
   min-height: 100vh;
